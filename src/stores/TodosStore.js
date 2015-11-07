@@ -1,34 +1,58 @@
+import { without, findIndex } from 'lodash';
+import FakeServer from '../util/FakeServer';
 import BaseStore from './BaseStore';
-import AppDispatcher from '../dispatcher/AppDispatcher';
-
+import Q from 'q';
 import {
-  TODOS_UPDATED
-} from '../constants/AppConstants';
+  TODO_LIST,
+  TODO_CREATE,
+  TODO_REMOVE
+} from '../constants/TodoConstants';
 
-class TodosStore extends BaseStore {
+let server = new FakeServer();
 
-  emitChange() {
-    this.emit(TODOS_UPDATED);
+class TodoStore extends BaseStore {
+
+  constructor(...args) {
+    super(...args);
+
+    this.state.todos = [];
+
+    let events = {};
+    events[TODO_LIST] = this.list;
+    events[TODO_CREATE] = this.create;
+    events[TODO_REMOVE] = this.remove;
+
+    this.register(events);
   }
 
-  addChangeListener(callback) {
-    this.on(TODOS_UPDATED, callback);
+  list() {
+    return Q.resolve(server.list())
+      .then(todos => {
+        this.state.todos = todos;
+      });
   }
 
-  removeChangeListener(callback) {
-    this.removeListener(TODOS_UPDATED, callback);
+  create(todo) {
+    return Q.resolve(server.create(todo))
+      .then(newTodo => {
+        this.state.todos.push(newTodo);
+      });
+  }
+
+  update(todo) {
+    return Q.resolve(server.update(todo))
+      .then(updatedTodo => {
+        let foundIndex = findIndex(this.state.todos, {id: todo.id});
+        this.state.todos[foundIndex] = updatedTodo;
+      });
+  }
+
+  remove(todo) {
+    return Q.resolve(server.remove(todo.id))
+      .then(() => {
+        this.state.todos = without(this.state.todos, todo);
+      });
   }
 }
 
-let store = new TodosStore();
-
-AppDispatcher.register((action) => {
-  switch(action.actionType) {
-    case ITEMS_GET_SUCCESS:
-      store.setAll(action.todos);
-      break;
-    default:
-  }
-});
-
-export default store;
+export default new TodoStore();

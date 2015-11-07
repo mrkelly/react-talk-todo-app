@@ -23,19 +23,17 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015', 'react']
         }
-      }, {
-        test: /\.scss$/,
-        loader: 'style!css!sass'
-      }, {
-        test: /\.jpe?g$|\.gif$|\.png$|\.ico|\.svg$|\.woff$|\.ttf$/,
-        loader: 'file-loader?name=[path][name].[ext]'
       }, {
         test: /\.json$/,
         exclude: /node_modules/,
         loader: 'json-loader'
-      }
+      }, {
+        test: /\.scss$/,
+        loader: 'style!css!sass'
+      },
+      { test: /\.woff(2)??$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+      { test: /\.(ttf|eot|svg)?$/, loader: "file-loader" }
     ]
   },
   plugins: [
