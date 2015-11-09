@@ -13,12 +13,15 @@ export default class TodoList extends React.Component {
     this.state = TodoStore.getState();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     TodoStore.addChangeListener(this.onStoreChange);
+    if (this.state.todos.length > 1) {
+      TodoActions.list();
+    }
   }
 
-  componentDidMount() {
-    TodoActions.list();
+  componentWillUnmount () {
+    TodoStore.removeChangeListener(this.onStoreChange);
   }
 
   onStoreChange() {

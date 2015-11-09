@@ -2,7 +2,23 @@ import { assign, each, values } from 'lodash';
 
 export default class FakeServer {
   constructor() {
-    this.todos = {};
+    this.todos = {
+      1: {
+        id: 1,
+        description: 'gadgadgadgadg',
+        completed: false
+      },
+      2: {
+        id: 2,
+        description: 'gadgadgadgadg',
+        completed: false
+      },
+      3: {
+        id: 3,
+        description: 'gadgadgadgadg',
+        completed: false
+      }
+    };
   }
 
   create(todo) {

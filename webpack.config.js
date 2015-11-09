@@ -1,17 +1,20 @@
+'use strict';
+
 var path = require('path');
 var WebpackHtmlPlugin = require('webpack-html-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  context: path.join(__dirname, './src'),
+  context: __dirname + '/src',
   target: 'web',
   cache: true,
   debug: true,
   devtool: 'inline-source-map',
   entry: {
-    app: ['./app.jsx']
+    index: ['./index.jsx']
   },
   output: {
-    path: path.resolve('./build'),
+    path: path.resolve(__dirname + '/build'),
     publicPath: '/',
     filename: '[name].js',
     pathinfo: false
@@ -30,7 +33,7 @@ module.exports = {
         loader: 'json-loader'
       }, {
         test: /\.scss$/,
-        loader: 'style!css!sass'
+        loader: ExtractTextPlugin.extract('style', 'css!sass')
       },
       { test: /\.woff(2)??$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
       { test: /\.(ttf|eot|svg)?$/, loader: "file-loader" }
@@ -41,11 +44,15 @@ module.exports = {
       inject: true,
       hash: true,
       title: 'React Todo',
+      favicon: __dirname + '/src/assets/favicon.ico',
       filename: 'index.html',
       template: __dirname + '/src/index.html'
+    }),
+    new ExtractTextPlugin("style.css", {
+      allChunks: true
     })
   ],
   resolve: {
     extensions: ['', '.js', '.json', '.jsx']
-  },
+  }
 };
