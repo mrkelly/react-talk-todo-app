@@ -20,7 +20,8 @@ export default class TodoList extends React.Component {
           <ul className="list-group">
             {map(this.state.todos, todo => {
               return (
-                <TodoItem key={todo.id} todo={todo} />
+                <TodoItem key={todo.id} todo={todo}
+                  onRemoveTodo={this.onRemoveTodo} />
               );
             })}
             <TodoInput onAddTodo={this.onAddTodo}/>
@@ -28,11 +29,5 @@ export default class TodoList extends React.Component {
         </div>
       </div>
     );
-  }
-
-  onAddTodo(todo) {
-    this.setState({
-      todos: this.state.todos.concat([todo])
-    });
   }
 }
