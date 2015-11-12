@@ -2,23 +2,11 @@ import { assign, each, values } from 'lodash';
 
 export default class FakeServer {
   constructor() {
-    this.todos = {
-      1: {
-        id: 1,
-        description: 'gadgadgadgadg',
-        completed: false
-      },
-      2: {
-        id: 2,
-        description: 'gadgadgadgadg',
-        completed: false
-      },
-      3: {
-        id: 3,
-        description: 'gadgadgadgadg',
-        completed: false
-      }
-    };
+    this.todos = { };
+  }
+
+  list() {
+    return values(this.todos);
   }
 
   create(todo) {
@@ -28,20 +16,6 @@ export default class FakeServer {
     });
     this.todos[todo.id] = todo;
     return todo;
-  }
-
-  list() {
-    return values(this.todos);
-  }
-
-  update(id, updates) {
-    this.todos[id] = assign({}, this.todos[id], updates);
-  }
-
-  updateAll(updates) {
-    each(this.todos, (todo, id) => {
-        this.update(id, updates);
-    });
   }
 
   remove(id) {
