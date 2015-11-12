@@ -1,15 +1,28 @@
 import React from 'react';
 import { map } from 'lodash';
 
+import TodoStore from '../../stores/TodosStore';
 import TodoItem from '../TodoItem/TodoItem';
 import TodoInput from '../TodoInput/TodoInput';
+import TodoActions from '../../actions/TodoActions';
 
 export default class TodoList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      todos: [ ]
-    };
+    this.state = TodoStore.getState();
+    this.onStoreChange = this.onStoreChange.bind(this);
+  }
+
+  componentDidMount() {
+    TodoStore.addChangeListener(this.onStoreChange);
+  }
+
+  componentWillUnmount () {
+    TodoStore.removeChangeListener(this.onStoreChange);
+  }
+
+  onStoreChange() {
+    this.setState(TodoStore.getState());
   }
 
   render() {
@@ -28,5 +41,13 @@ export default class TodoList extends React.Component {
         </div>
       </div>
     );
+  }
+
+  onAddTodo(todo) {
+    TodoActions.create(todo);
+  }
+
+  onRemoveTodo(todo) {
+    TodoActions.remove(todo);
   }
 }
