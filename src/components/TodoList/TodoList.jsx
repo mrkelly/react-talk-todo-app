@@ -9,15 +9,12 @@ import TodoActions from '../../actions/TodoActions';
 export default class TodoList extends React.Component {
   constructor(props) {
     super(props);
-    this.onStoreChange = this.onStoreChange.bind(this);
     this.state = TodoStore.getState();
+    this.onStoreChange = this.onStoreChange.bind(this);
   }
 
   componentDidMount() {
     TodoStore.addChangeListener(this.onStoreChange);
-    if (this.state.todos.length > 1) {
-      TodoActions.list();
-    }
   }
 
   componentWillUnmount () {
@@ -36,8 +33,7 @@ export default class TodoList extends React.Component {
             {map(this.state.todos, todo => {
               return (
                 <TodoItem key={todo.id} todo={todo}
-                  onRemoveTodo={this.onRemoveTodo}
-                  onCompleteTodo={this.onCompleteTodo}/>
+                  onRemoveTodo={this.onRemoveTodo} />
               );
             })}
             <TodoInput onAddTodo={this.onAddTodo}/>
@@ -53,10 +49,5 @@ export default class TodoList extends React.Component {
 
   onRemoveTodo(todo) {
     TodoActions.remove(todo);
-  }
-
-  onCompleteTodo(todo) {
-    todo.complete = true;
-    TodoActions.update(todo);
   }
 }

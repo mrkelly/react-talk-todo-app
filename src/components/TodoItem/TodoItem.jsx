@@ -9,7 +9,7 @@ export default class TodoItem extends React.Component {
   render() {
     return (
       <li className="list-group-item text-left">
-        {this.props.todo.description}
+        <span>{this.props.todo.description}</span>
         <span className="pull-right">
           <button className="btn btn-default btn-xs" onClick={this.onRemoveTodo}>Remove</button>
         </span>
@@ -19,9 +19,5 @@ export default class TodoItem extends React.Component {
 
   onRemoveTodo() {
     this.props.onRemoveTodo(this.props.todo);
-  }
-
-  onCompleteTodo() {
-    this.props.onCompleteTodo(this.props.todo);
   }
 }
