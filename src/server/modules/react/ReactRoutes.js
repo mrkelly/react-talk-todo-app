@@ -27,6 +27,21 @@ exports.register = (server, options, next) => {
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width" />
         </head>
+        <style>
+          ${cssData}
+        </style>
+        <body>
+          <div id="app">${ReactDOMServer.renderToString(new AppFactory())}</div>
+          <script>
+            setTimeout(function() {
+                var headID = document.getElementsByTagName("head")[0];
+                var newScript = document.createElement('script');
+                newScript.type = 'text/javascript';
+                newScript.src = '/index.js';
+                headID.appendChild(newScript);
+            }, 200);
+          </script>
+        </body>
       </html>
     `
 
