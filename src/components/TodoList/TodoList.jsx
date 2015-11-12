@@ -10,7 +10,6 @@ export default class TodoList extends React.Component {
     this.state = {
       todos: [ ]
     };
-    this.onAddTodo = this.onAddTodo.bind(this);
   }
 
   render() {
