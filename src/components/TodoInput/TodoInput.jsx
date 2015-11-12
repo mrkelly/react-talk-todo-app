@@ -9,7 +9,8 @@ export default class TodoInput extends React.Component {
   render() {
     return (
       <li className="list-group-item">
-        <input type="text" className="form-control" onKeyDown={this.onKeyDown}/>
+        <input type="text" className="form-control" placeholder="Something to do"
+          onKeyDown={this.onKeyDown}/>
       </li>
     );
   }
